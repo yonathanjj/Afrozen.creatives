@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale: 1.0">
+    <title>Romantic Strip Card Game</title>
+    <style>
+        #logo-link {
+    display: block;
+    text-align: center;
+    margin: 20px auto;
+}
+
+#logo {
+    width: 120px;  /* Adjust size */
+    height: auto;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+#logo:hover {
+    transform: scale(1.1);
+}
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Arial', sans-serif; background-color: #F0E6D2; overflow-x: hidden; }
+
+        .centered-container { display: flex; justify-content: center; align-items: center; height: 100vh; flex-direction: column; text-align: center; }
+        .welcome-text { font-size: 36px; color: #FF6347; font-weight: bold; margin-bottom: 20px; }
+        .start-button { padding: 15px 30px; font-size: 18px; border: none; background-color: #FF6347; color: white; cursor: pointer; border-radius: 5px; transition: all 0.3s ease; }
+        .start-button:hover { background-color: #e55b42; }
+        .hidden { display: none; }
+
+        .game-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; padding: 20px; }
+        .card { width: 150px; height: 200px; background-color: #fff; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); cursor: pointer; position: relative; transform-style: preserve-3d; transition: transform 0.3s; }
+        .card:hover { transform: scale(1.1); }
+        .card-inner { width: 100%; height: 100%; position: absolute; transform: rotateY(0deg); transform-style: preserve-3d; transition: transform 0.6s; }
+        .card.flipped .card-inner { transform: rotateY(180deg); }
+
+        .card-front, .card-back { width: 100%; height: 100%; position: absolute; backface-visibility: hidden; display: flex; justify-content: center; align-items: center; font-size: 24px; color: white; font-weight: bold; border-radius: 10px; }
+        .card-front { background-color: #FF6347; }
+        .card-back { background-color: #FFD700; transform: rotateY(180deg); padding: 20px; text-align: center; font-size: 16px; }
+
+        .prompt { font-size: 14px; font-weight: normal; color: #333; }
+
+        #turn-indicator { position: fixed; top: 10px; left: 50%; transform: translateX(-50%); font-size: 18px; color: #333; }
+
+    </style>
+</head>
+<body>
+<!-- Logo acting as a Home Link -->
+<a href="index.html" id="logo-link">
+    <img src="logoi.png" alt="Game Logo" id="logo">
+</a>
+
+<!-- Welcome Page -->
+<div class="centered-container" id="welcome-screen">
+    <div class="welcome-text">Welcome to the Romantic Strip Card Game!</div>
+    <button class="start-button" id="start-btn">Start Game</button>
+</div>
+
+<!-- Game Page (Hidden Initially) -->
+<div class="game-container hidden" id="game-board">
+    <!-- Cards will be added dynamically via JS -->
+</div>
+
+<!-- Turn Indicator -->
+<div id="turn-indicator">Cards Left: 30</div>
+
+<!-- GSAP (for animations) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+
+<script>
+    // Handle Welcome and Start Button
+    document.getElementById("start-btn").addEventListener("click", function () {
+        gsap.to("#welcome-screen", { opacity: 0, duration: 1, onComplete: () => {
+            document.getElementById("welcome-screen").classList.add("hidden");
+            document.getElementById("game-board").classList.remove("hidden");
+            gsap.from("#game-board", { opacity: 0, duration: 1 });
+
+            // Animate card entrance
+            gsap.from(".card", { scale: 0, opacity: 0, stagger: 0.1, duration: 0.5 });
+        }});
+    });
+
+    // Spicy and Fun Prompts for Cards
+    let prompts = [
+        "Give your partner a compliment ❤️", "Share your favorite intimate memory together 💞",
+        "Whisper something naughty in their ear 🥰", "Hold hands and feel the sparks fly 🤝",
+        "Say three things you love about their body 💘", "Describe the moment you first laid eyes on them 💓",
+        "Give them a surprise kiss 🤗", "What’s your favorite thing they do to turn you on? 💕",
+        "Tell them one sex desire secret you've never shared before 😏", "Plan a hot date for later tonight 🎉",
+        "Stare into each other’s eyes and let the tension build 👀", "Share the most romantic moment you’ve had this year ✨",
+        "Give your partner a sensual shoulder massage 💆", "What song gets you both in the mood? 🎶",
+        "Write a short love note and hand it over 💌", "Do a fun and flirty dance together 🕺💃",
+        "Share your biggest dream in life, and make it something you could do together 🌟", "Tell them what you admire most about their personality 🏆",
+        "Ask them a deep, intimate question 💭", "Recreate your first hug and relive the magic 🤗",
+        "Close your eyes and describe their scent that drives you wild 🌹", "Guess each other's favorite romantic movie 🎬",
+        "What’s one adventurous thing you’d love to do together? ✈️", "Reveal a funny childhood crush that still makes you laugh 😂",
+        "Tell them how you knew they were someone special from the start ❤️", "Give a lingering 10-second kiss on the forehead 😘",
+        "Share your favorite inside joke that always makes you laugh 🤣", "Ask them a fun and flirty ‘what if’ scenario 🤔",
+        "Compliment their personality in the most heartfelt way 💡", "Say something sweet and cheesy to make them blush 🧀",
+        "Give them a playful kiss on the cheek 😘", "Pretend you're in a movie scene and act it out with flair 🎬"
+    ];
+
+    // Generate 30 Cards Dynamically
+    let deck = document.querySelector("#game-board");
+
+    let remainingCards = 30;
+    document.getElementById("turn-indicator").innerText = `Cards Left: ${remainingCards}`;
+
+    for (let i = 0; i < 30; i++) {
+        let card = document.createElement("div");
+        card.classList.add("card");
+        card.innerHTML = `
+            <div class="card-inner">
+                <div class="card-front">❤️</div>
+                <div class="card-back"><p class="prompt">?</p></div>
+            </div>
+        `;
+        card.addEventListener("click", function () {
+            flipCard(card, i);
+        });
+        deck.appendChild(card);
+    }
+
+    let lastFlippedCard = null;
+
+    function flipCard(card, index) {
+        if (!card.classList.contains("flipped")) {
+            card.classList.add("flipped");
+            let randomPrompt = prompts[index];
+
+            // Update the back of the card with the prompt
+            setTimeout(() => {
+                card.querySelector(".card-back .prompt").innerText = randomPrompt;
+            }, 300);
+
+            remainingCards--;
+            document.getElementById("turn-indicator").innerText = `Cards Left: ${remainingCards}`;
+
+            // If there was a card already flipped, hide it when the new card is flipped
+            if (lastFlippedCard) {
+                gsap.to(lastFlippedCard, { opacity: 0, x: -100, duration: 0.5 });
+            }
+
+            // Set the current card as the last flipped card
+            lastFlippedCard = card;
+        }
+    }
+</script>
+
+</body>
+</html>

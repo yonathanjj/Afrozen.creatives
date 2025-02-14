@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Valentine's Card Game</title>
+  <link rel="stylesheet" href="val.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body>
+
+<!-- Logo acting as a Home Link -->
+<a href="index.html" id="logo-link">
+  <img src="logoi.png" alt="Game Logo" id="logo">
+</a>
+
+<!-- Welcome Screen -->
+<div id="welcome-screen" class="screen">
+  <h1>Valentine's Intimacy Card Game 💖</h1>
+  <button id="start-btn">Play Game</button>
+</div>
+
+<!-- Game Board -->
+<div id="game-board" class="screen hidden">
+  <h2 id="turn-indicator">Cards Left: 30</h2>
+  <div class="card-deck"></div>
+</div>
+
+<script src="val.js"></script>
+</body>
+</html>

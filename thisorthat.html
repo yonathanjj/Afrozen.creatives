@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>This or That - Love Edition</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffdde1;
+            text-align: center;
+            padding: 20px;
+        }
+        #game-container {
+            display: none;
+        }
+        .button {
+            background-color: #ff4d6d;
+            color: white;
+            padding: 10px 20px;
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 10px;
+        }
+        .button:hover {
+            background-color: #ff1e4d;
+        }
+        #logo-link {
+    display: block;
+    text-align: center;
+    margin: 20px auto;
+}
+
+#logo {
+    width: 120px;  /* Adjust size */
+    height: auto;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+#logo:hover {
+    transform: scale(1.1);
+}
+
+    </style>
+</head>
+<body>
+<!-- Logo acting as a Home Link -->
+<a href="index.html" id="logo-link">
+    <img src="logoi.png" alt="Game Logo" id="logo">
+</a>
+
+<!-- Welcome Page -->
+<div id="welcome-container">
+    <h1>🔥 This or That - Love Edition 🔥</h1>
+    <p>👫 Two people play together using one device.</p>
+    <p>🎭 Take turns answering "This or That" questions.</p>
+    <p>😏 If you refuse to answer, you must complete a dare!</p>
+    <p>👀 No skipping! The game gets hotter as you play.</p>
+    <button class="button" onclick="startGame()">Start Playing ❤️</button>
+</div>
+
+<!-- Game Section -->
+<div id="game-container">
+    <h2 id="question">Loading...</h2>
+    <button class="button" onclick="nextQuestion('option1')">Option 1</button>
+    <button class="button" onclick="nextQuestion('option2')">Option 2</button>
+    <button class="button" onclick="showDare()">❌ I Pass (Do a Dare!)</button>
+    <h3 id="dare" style="display: none;"></h3>
+</div>
+
+<script>
+    let questions = [
+        { q: "Slow, passionate kisses 😘 OR teasing, playful bites? 😏", dare: "Whisper your dirtiest thought to your partner 🔥" },
+        { q: "Make-out session in the rain 🌧️ OR under the stars? ✨", dare: "Give a deep kiss for 10 seconds 😘" },
+        { q: "Handcuffs ⛓️ OR Blindfolds? 😉", dare: "Let your partner take full control for the next round! 😈" },
+        { q: "Hot shower together 🚿 OR cozy cuddling by the fire? 🔥", dare: "Lick your partner's neck for 5 seconds 😏" },
+        { q: "Moaning softly 😌 OR whispering naughty words? 😈", dare: "Tell your partner your biggest turn-on 😘" },
+        { q: "Be dominant 💪 OR be submissive? 😏", dare: "Let your partner decide your next move 😈" },
+        { q: "Love bites OR love marks? 🖤", dare: "Leave a small bite mark somewhere on your partner 😉" },
+        { q: "Romantic slow dance 💃 OR sensual lap dance? 🥵", dare: "Dance on your partner for 20 seconds 🔥" },
+        { q: "Tease all night OR go straight to the point? 😜", dare: "Kiss somewhere unexpected 😘" },
+        { q: "Public teasing 😏 OR private, intense moments? 🔥", dare: "Secretly whisper what you’d do if you were alone right now 😉" },
+        { q: "Naughty texts 💬 OR sensual voice notes? 🔥", dare: "Send your partner a naughty text right now 😉" },
+        { q: "Fingertip tracing 😌 OR full-body massage? 💆", dare: "Massage your partner for one minute 🥰" },
+        { q: "Eye contact while kissing 👀 OR eyes closed for full feeling? 😘", dare: "Kiss without breaking eye contact 🔥" },
+        { q: "Biting lips OR sucking fingers? 😏", dare: "Do it right now! 🔥" },
+        { q: "Long teasing foreplay OR spontaneous fun? 😈", dare: "Describe what you’d do to your partner in detail 😉" },
+        { q: "Neck kisses OR ear whispers? 😍", dare: "Kiss your partner’s neck slowly 🔥" },
+        { q: "Being surprised OR doing the surprising? 😉", dare: "Your partner gets to choose a surprise for you 😏" },
+        { q: "Playful tickling OR firm gripping? 😜", dare: "Tickle or grab your partner now 😈" },
+        { q: "Slow & passionate OR rough & intense? 😏", dare: "Act out your answer for 10 seconds 😘" },
+        { q: "Be tied up OR do the tying? 😉", dare: "Use something nearby to 'tie' your partner (for fun!) 🔥" },
+        { q: "Whisper naughty things OR act them out? 😈", dare: "Whisper your wildest fantasy 😏" },
+        { q: "Kisses all over OR just one deep kiss? 💋", dare: "Kiss five different spots on your partner 😘" },
+        { q: "Secret rendezvous OR unexpected passion? 🔥", dare: "Tell your partner the naughtiest place you'd do it 😉" },
+        { q: "Morning love OR late-night passion? 🌙", dare: "Give a good-morning style kiss 💋" },
+        { q: "Hot and steamy OR slow and romantic? 😏", dare: "Describe a hot scene from a movie you love! 🔥" },
+        { q: "Hair pulling OR back scratching? 😈", dare: "Do it lightly to your partner now 😉" },
+        { q: "Being seduced OR doing the seducing? 🔥", dare: "Seduce your partner in 10 seconds 😘" },
+        { q: "Love notes OR whispered words? 💌", dare: "Whisper your favorite compliment about your partner 😍" },
+        { q: "A romantic getaway 🏝️ OR a night of adventure? 🌃", dare: "Plan a surprise date for your partner! ❤️" },
+        { q: "Candlelight dinner 🍷 OR breakfast in bed? ☕", dare: "Feed your partner something delicious 😘" }
+    ];
+
+    let currentIndex = 0;
+
+    function startGame() {
+        document.getElementById("welcome-container").style.display = "none";
+        document.getElementById("game-container").style.display = "block";
+        loadQuestion();
+    }
+
+    function loadQuestion() {
+        document.getElementById("dare").style.display = "none";
+        if (currentIndex < questions.length) {
+            document.getElementById("question").innerText = questions[currentIndex].q;
+        } else {
+            document.getElementById("question").innerText = "Game Over! Play Again?";
+            currentIndex = 0;
+        }
+    }
+
+    function nextQuestion(choice) {
+        currentIndex++;
+        loadQuestion();
+    }
+
+    function showDare() {
+        document.getElementById("dare").innerText = "🔥 Dare: " + questions[currentIndex].dare;
+        document.getElementById("dare").style.display = "block";
+    }
+</script>
+
+</body>
+</html>

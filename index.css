@@ -1,0 +1,270 @@
+/* General styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Helvetica', sans-serif;
+  background-color: black;
+  color: white;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Navbar Container */
+.nav-container {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 500px;
+  height: 70px;
+  background: #f5f5f5;
+  border-radius: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around; /* This spaces out items evenly */
+  padding: 0 20px;
+  box-shadow: 0px 10px 20px rgba(255, 255, 255, 0.2);
+}
+
+/* Logo */
+.logo a {
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  height: 50px; /* Increased to make it fit better */
+  max-height: 100%; /* Ensures it stays inside */
+  transition: transform 0.3s ease;
+}
+
+/* Navigation Links */
+nav ul {
+  display: flex;
+  list-style: none;
+  gap: 25px; /* Adds even spacing between links */
+  padding: 0;
+  margin: 0;
+}
+
+/* Nav Links */
+nav ul li {
+  position: relative;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: black;
+  font-size: 1.2rem;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+/* Indicator under links */
+nav ul li a::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -5px;
+  width: 0;
+  height: 3px;
+  background-color: black;
+  transition: width 0.3s ease, left 0.3s ease;
+}
+
+/* On hover, indicator expands */
+nav ul li a:hover::after {
+  width: 100%;
+  left: 0;
+}
+
+nav ul li a:hover {
+  color: gray;
+}
+
+/* Mobile Responsive */
+@media (max-width: 600px) {
+  .nav-container {
+    width: 400px;
+    height: 60px;
+  }
+
+  .logo img {
+    height: 40px;
+  }
+
+  nav ul {
+    gap: 15px;
+  }
+
+  nav ul li a {
+    font-size: 1rem;
+  }
+}
+
+
+
+.hero {
+  text-align: center;
+  padding: 8rem 1.5rem 4rem; /* Adjust spacing for smaller screens */
+}
+
+.hero-text {
+  font-size: 12rem; /* Default for large screens */
+  font-weight: 600;
+  letter-spacing: 2px;
+  cursor: pointer;
+  display: inline-block;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1; /* Prevents text from overlapping */
+  word-break: break-word;
+}
+
+.hero-text span {
+  display: inline-block;
+  transform: scaleY(1);
+  transition: transform 0.3s ease-in-out;
+  transform-origin: bottom center;
+}
+
+.hero-subtext {
+  font-size: 1.2rem; /* Slightly smaller for readability */
+  margin-top: 1rem;
+  font-weight: 300;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Tablet Screens */
+@media (max-width: 1024px) {
+  .hero {
+    padding: 6rem 1rem 3rem;
+  }
+
+  .hero-text {
+    font-size: 8rem; /* Reduce text size for tablets */
+  }
+
+  .hero-subtext {
+    font-size: 1rem;
+    max-width: 600px;
+  }
+}
+
+/* Mobile Screens */
+@media (max-width: 768px) {
+  .hero {
+    padding: 4rem 1rem 2rem;
+  }
+
+  .hero-text {
+    font-size: 5rem; /* Smaller for mobile */
+  }
+
+  .hero-subtext {
+    font-size: 0.9rem;
+    max-width: 90%;
+  }
+}
+
+/* Small Mobile Screens */
+@media (max-width: 480px) {
+  .hero {
+    padding: 3rem 1rem 2rem;
+  }
+
+  .hero-text {
+    font-size: 3rem; /* Even smaller for tiny screens */
+  }
+
+  .hero-subtext {
+    font-size: 0.8rem;
+  }
+}
+
+
+
+
+/* CTA Buttons */
+.cta-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem; /* Space between buttons */
+  margin-top: 2rem;
+  flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
+}
+
+.cta-btn {
+  display: inline-block;
+  padding: 0.8rem 2rem;
+  font-size: 1.2rem;
+  font-weight: 500;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.8);
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  border-radius: 50px; /* Curved edges */
+  position: relative;
+  overflow: hidden;
+  transition: color 0.3s ease-in-out, border-color 0.3s ease-in-out;
+  min-width: 150px; /* Ensure buttons are never too small */
+}
+
+/* Curved Fill Animation */
+.cta-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0%; /* Start with 0 width */
+  height: 100%;
+  background: rgba(255, 255, 255, 0.9); /* White fill */
+  border-radius: 50px 0 0 50px; /* Curved effect on the right */
+  transition: width 0.4s ease-in-out;
+  z-index: -1;
+}
+
+/* Hover Effect */
+.cta-btn:hover {
+  color: black;
+  border-color: white;
+}
+
+.cta-btn:hover::before {
+  width: 100%; /* Expands fully */
+  border-radius: 50px; /* Fully rounded when filled */
+}
+
+/* Responsive Styles */
+
+/* Medium screens (Tablets) */
+@media (max-width: 768px) {
+  .cta-btn {
+    font-size: 1rem; /* Smaller text */
+    padding: 0.8rem 1.5rem; /* Adjust padding */
+  }
+
+  .cta-buttons {
+    gap: 1rem; /* Reduced gap */
+  }
+}
+
+/* Small screens (Mobile) */
+@media (max-width: 480px) {
+  .cta-btn {
+    font-size: 0.9rem; /* Even smaller text */
+    padding: 0.6rem 1.2rem; /* Adjust padding for mobile */
+    min-width: 130px; /* Ensure buttons are not too small */
+  }
+
+  .cta-buttons {
+    gap: 0.8rem; /* Reduced gap */
+  }
+}

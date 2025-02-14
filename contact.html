@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>hola at us</title>
+    <link href="https://fonts.googleapis.com/css2?family=Helvetica:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="index.css">
+    <!-- GSAP Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.0/gsap.min.js"></script>
+</head>
+<style>
+    /* General styles */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Helvetica', sans-serif;
+    background-color: black;
+    color: white;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Navbar Container */
+  .nav-container {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 500px;
+    height: 70px;
+    background: #ffffff);
+    border-radius: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around; /* This spaces out items evenly */
+    padding: 0 20px;
+    box-shadow: 0px 10px 20px rgba(255, 255, 255, 0.2);
+  }
+
+  /* Logo */
+  .logo a {
+    display: flex;
+    align-items: center;
+  }
+
+  .logo img {
+    height: 50px; /* Increased to make it fit better */
+    max-height: 100%; /* Ensures it stays inside */
+    transition: transform 0.3s ease;
+  }
+
+  /* Navigation Links */
+  nav ul {
+    display: flex;
+    list-style: none;
+    gap: 25px; /* Adds even spacing between links */
+    padding: 0;
+    margin: 0;
+  }
+
+  /* Nav Links */
+  nav ul li {
+    position: relative;
+  }
+
+  nav ul li a {
+    text-decoration: none;
+    color: black;
+    font-size: 1.2rem;
+    font-weight: bold;
+    transition: color 0.3s ease;
+  }
+
+  /* Indicator under links */
+  nav ul li a::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -5px;
+    width: 0;
+    height: 3px;
+    background-color: black;
+    transition: width 0.3s ease, left 0.3s ease;
+  }
+
+  /* On hover, indicator expands */
+  nav ul li a:hover::after {
+    width: 100%;
+    left: 0;
+  }
+
+  nav ul li a:hover {
+    color: gray;
+  }
+
+  /* Mobile Responsive */
+  @media (max-width: 600px) {
+    .nav-container {
+      width: 400px;
+      height: 60px;
+    }
+
+    .logo img {
+      height: 40px;
+    }
+
+    nav ul {
+      gap: 15px;
+    }
+
+    nav ul li a {
+      font-size: 1rem;
+    }
+  }
+
+  /* Contact Page Styles */
+  .contact-container {
+      display: flex;
+      justify-content: space-between;
+      padding: 3rem 5rem;
+      flex-wrap: wrap;
+      gap: 3rem;
+  }
+
+  .contact-left,
+  .contact-right {
+      width: 45%;
+  }
+
+  .contact-left h2,
+  .contact-right h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      border-bottom: 2px solid white;
+      padding-bottom: 0.5rem;
+  }
+
+  .contact-left p,
+  .contact-right p {
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+  }
+
+  .contact-links {
+      margin-top: 2rem;
+      text-align: center;
+  }
+
+  .contact-links a {
+      text-decoration: none;
+      color: rgba(255, 255, 255, 0.5); /* Dimmed effect */
+      font-size: 1.1rem;
+      margin: 0 1rem;
+      transition: color 0.3s ease, transform 0.3s ease;
+  }
+
+  .contact-links a:hover {
+      color: white;
+      transform: scale(1.1); /* Light up and grow effect */
+  }
+
+  /* Form Styling */
+  .contact-form input,
+  .contact-form textarea {
+      width: 100%;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      background-color: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.3); /* Dimmed border */
+      color: white;
+      border-radius: 4px;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+  }
+
+  .contact-form input:focus,
+  .contact-form textarea:focus {
+      border-color: white; /* Focus border becomes white */
+  }
+
+  .contact-form button {
+    width: 100%;
+    padding: 1rem;
+    background-color: transparent;
+    border: 2px solid white;
+    color: white;
+    font-size: 1.2rem;
+    border-radius: 30px; /* Curved button */
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: color 0.4s ease, border-color 0.4s ease;
+}
+
+.contact-form button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+    border-radius: 30px; /* Curved right side of the fill */
+    z-index: 0; /* Keeps it behind the text */
+}
+
+.contact-form button span {
+    position: relative;
+    z-index: 1; /* Ensure text stays above the pseudo-element */
+}
+
+.contact-form button:hover::before {
+    transform: scaleX(1);
+}
+
+.contact-form button:hover {
+    color: black;
+    border-color: white;
+}
+
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .contact-container {
+      flex-direction: column;
+      padding: 2rem;
+    }
+
+    .contact-left,
+    .contact-right {
+      width: 100%;
+    }
+  }
+</style>
+
+<body>
+<header>
+    <div class="nav-container">
+        <div class="logo">
+            <a href="index.html">
+                <img src="logoi.png" alt="Logo" />
+            </a>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="games.html">games</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+
+<!-- Contact Container -->
+<div class="contact-container">
+
+    <!-- Left Content: Form -->
+    <div class="contact-left">
+        <h2>Contact Us</h2>
+        <form class="contact-form">
+            <input type="text" name="name" placeholder="Your Name" required>
+            <input type="email" name="email" placeholder="Your Email" required>
+            <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
+            <button type="submit"><span>Send Message</span></button>
+        </form>
+    </div>
+
+    <!-- Right Content: Information -->
+    <div class="contact-right">
+        <h2>Contact Information</h2>
+        <p><strong>Address:</strong> Ice Hawassa, Hawassa, Ethiopia</p>
+        <p><strong>Phone:</strong> +2519 2213 1429 / +2519 7611 2570</p>
+        <p><strong>Email:</strong> support@afrozen.com</p>
+        <p><strong>Business Hours:</strong> Mon-sat, 9:00 AM - 6:00 PM</p>
+        <div class="contact-links">
+            <p>Follow Us:</p>
+            <a href="https://facebook.com" target="_blank">Facebook</a>
+            <a href="https://instagram.com" target="_blank">Instagram</a>
+            <a href="https://twitter.com" target="_blank">Twitter</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    // GSAP Animations for form elements and information on the right
+    gsap.from(".contact-left h2", { duration: 1, opacity: 0, y: -50, ease: "power4.out" });
+    gsap.from(".contact-form input, .contact-form textarea", {
+        duration: 1.5,
+        opacity: 0,
+        x: -100,
+        stagger: 0.2,
+        ease: "power4.out"
+    });
+    gsap.from(".contact-form button", { duration: 1, opacity: 0, y: 50, ease: "power4.out", delay: 1 });
+    gsap.from(".contact-right h2", { duration: 1, opacity: 0, y: -50, ease: "power4.out", delay: 1 });
+    gsap.from(".contact-right p", {
+        duration: 1.5,
+        opacity: 0,
+        x: 100,
+        stagger: 0.3,
+        ease: "power4.out",
+        delay: 1.5
+    });
+    gsap.from(".contact-links", { duration: 1, opacity: 0, y: 30, ease: "power4.out", delay: 2 });
+</script>
+
+</body>
+</html>
